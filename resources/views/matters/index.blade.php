@@ -28,5 +28,5 @@
     </div>
 </div>
 @endsection
-
+<!-- git add test -->
 {{--15行目 @foreach ($matter->products as $product)ではMatter.phpでつないだリレーションを呼び出した--}}

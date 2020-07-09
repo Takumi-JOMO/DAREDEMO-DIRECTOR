@@ -24,7 +24,6 @@ class CreateTodosTable extends Migration
             $table->text('status')->nullable();
             $table->text('comments')->nullable();
             $table->unsignedBigInteger('step_id');
-            gi
             $table->foreign('step_id')->references('id')->on('steps')->onDelete('cascade');
         });
     }
