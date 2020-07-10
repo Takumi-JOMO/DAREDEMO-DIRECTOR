@@ -63,6 +63,8 @@
                             <label for="inputText" class="col-sm-2 col-form-label">ワイヤーフレーム</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="inputText" name="todo_name">
+                                <input type="hidden" class="form-control" id="inputText" name="matter_id" value="{{ $matter->id }}">
+                                <!-- input 1つに対して送れるデータは１つ -->
                             </div>
                         </div>
                     </div>
