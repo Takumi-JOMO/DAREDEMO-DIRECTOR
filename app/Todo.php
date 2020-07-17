@@ -11,8 +11,12 @@ class Todo extends Model
 
     public function step()
     {
-        
        return $this->belongsTo('App\Step');
+    }
+
+    public function product()
+    {
+       return $this->belongsTo('App\Product');
     }
 
 }

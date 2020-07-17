@@ -41,5 +41,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Matter')->withTimestamps();
     }
+
+    public function authority()
+    {
+        return $this->belongsTo('App\Authority');
+    }
     
 }

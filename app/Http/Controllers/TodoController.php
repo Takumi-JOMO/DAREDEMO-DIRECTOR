@@ -9,6 +9,10 @@ use App\Step;
 
 class TodoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -60,14 +64,45 @@ class TodoController extends Controller
             $productName = Product::where('matter_id',$request->matter_id)->first();
             // where('title','Webサイト')があると、Webサイトを制作しない案件の場合エラーが出てしまうため 
         }
-        $step = Step::where('step_name','ワイヤーフレーム作成')->where('matter_id',$request->matter_id)->where('product_id',$productName->id)->first();
+        $steps = Step::where('matter_id',$request->matter_id)->where('product_id',$productName->id)->get();
         // dd($step);
-        $todo = new Todo;
-        $todo -> todo_name = $request -> todo_name;
-        $todo -> step_id = $step->id;
-        $todo -> save();
+        foreach ($steps as $step){
+            $todo = new Todo;
+            $todo -> todo_name = $request -> todo_name;
+            $todo -> step_id = $step->id;
+            $todo -> product_id = $productName->id;
+            $todo -> status = "進行中";
+            $todo -> save();
+        }
+
+        if (isset($filter['step'])) {
+        $step = Step::where('step_name',$filter['step'])->where('product_id',$productName->id)->where('matter_id',$request->matter_id)->first();
+        $countTodos = Todo::where('product_id',$productName->id)->where('step_id',$step->id)->where('status','!=','完了')->count();
+
+        if ($countTodos === 0){
+            $step -> status = "完了";
+            $step -> save();
+            
+        }else{
+            $step -> status = "未完了";
+            $step -> save();
+        }
+    }else{
+        $step = Step::where('step_name','ワイヤーフレーム作成')->where('product_id',$productName->id)->where('matter_id',$request->matter_id)->first();
+        $countTodos = Todo::where('product_id',$productName->id)->where('step_id',$step->id)->where('status','!=','完了')->count();
+
+        if ($countTodos === 0){
+            $step -> status = "完了";
+            $step -> save();
+            
+        }else{
+            $step -> status = "未完了";
+            $step -> save();
+        }
+    }
 
         return redirect()->route('matters.show', $request->matter_id);
+
     }
 
     /**
@@ -101,7 +136,43 @@ class TodoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request);
+        $todo = Todo::find($id);
+        // dd($todo->product->matter);
+        $todo -> status    = $request -> status;
+        
+        $todo -> save();
+        
+        // dd($request->step);
+        $step = Step::where('matter_id',$todo->product->matter->id)->where('product_id',$todo->product->id)->where('step_name',$request->step)->first();
+        // 開いているページのステップを探している
+        // where('step_name',$request->step)->first();のstepは$requestの中身が入っている
+
+        $countTodos = Todo::where('product_id',$todo->product->id)->where('step_id',$step->id)->where('status','!=','完了')->count();
+        
+        if ($countTodos === 0){
+            $step -> status = "完了";
+            $step -> save();
+            
+        }else{
+            $step -> status = "未完了";
+            $step -> save();
+        }
+        // dd($step);
+
+
+
+        return redirect('matters/' . $todo->product->matter->id . '?state=' . $request->state . '&step=' . $request->step);
+        // phpの変数と文字列の結合を行い、matters詳細ページのURLに合わせてURLを作成した
+
+        // return redirect()->route('matters.show',$todo->product->matter->id);
+        // return redirect()->routeはMatterControllerのshowメソッドに飛ぶ
+        // $todo->product->matter->idはリレーションの階層を下から辿っているのでidはmatterのidになる
+
+        // return view('matters.show', compact('todo'));は動かない
+        // compactはブレードファイルに変数を渡す
+        // return view はbladeに直接飛ぶ
+        // Mattersのshowbaldeファイルに飛ばすのはMatterControllerのShowメソッドにコーディング済みのため（コーディングの二度手間を省くため）
     }
 
     /**
@@ -112,6 +183,27 @@ class TodoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $todo = Todo::find($id);
+        $todos =Todo::where('product_id',$todo->product->id)->where('todo_name',$todo->todo_name)->get();
+
+        foreach ($todos as $todoList){
+        $todoList -> delete();
+        }
+
+        foreach ($todo->product->steps as $step){
+            // リレーション（$todo belongsTo product hasMany steps）
+            $countTodos = Todo::where('product_id',$todo->product->id)->where('step_id',$step->id)->where('status','!=','完了')->count();
+            
+            if ($countTodos === 0){
+                $step -> status = "完了";
+                $step -> save();
+                
+            }else{
+                $step -> status = "未完了";
+                $step -> save();
+            }
+        }
+        
+        return redirect()->route('matters.show', $todo->product->matter->id );
     }
 }

@@ -22,6 +22,8 @@ class CreateMatterUserTable extends Migration
             $table->foreign('matter_id')->references('id')->on('matters')->onDelete('cascade');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->unique(['user_id', 'matter_id']);
         });
     }
 

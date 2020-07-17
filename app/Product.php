@@ -9,7 +9,7 @@ class Product extends Model
     protected $fillable = ['title', 'url', 'matter_id'];
 
     public function matter()
-    {
+    { 
         
        return $this->belongsTo('App\Matter');
     }
@@ -17,5 +17,9 @@ class Product extends Model
     public function steps()
     {
         return $this->hasMany('App\Step');
+    }
+    public function todos()
+    {
+        return $this->hasMany('App\Todo');
     }
 }

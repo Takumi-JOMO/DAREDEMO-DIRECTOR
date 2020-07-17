@@ -21,5 +21,8 @@ Auth::routes();
 
 Route::resource('matters','MatterController');
 Route::resource('todos','TodoController');
+Route::resource('steps','StepController');
+Route::resource('users','UserController');
+Route::resource('products','ProductController');
 // Routingをした
 

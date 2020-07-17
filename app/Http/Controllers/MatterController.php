@@ -7,10 +7,15 @@ use App\Http\Requests;
 use App\Matter;
 use App\Product;
 use App\Step;
+use App\Todo;
 use Auth;
 
 class MatterController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -72,6 +77,7 @@ class MatterController extends Controller
             $step -> step_name = $name;//step_nameはカラム名であり、DBのカラム名と一致している必要がある
             $step -> matter_id = $matter->id;
             $step -> product_id = $product->id;
+            $step -> status = "未完了";
             $step -> save();
             }//$stepNames = []は配列であり、foreachで配列の中身を1つずつ取得している
         }//matterを作成する際にチェックしたproductを作成・保存している
@@ -87,8 +93,13 @@ class MatterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id,Request $request)
+
     {
+        // dd($id);
         $matter = Matter::find($id);
+
+        //$idは案件詳細画面のURLのパラメーターであり、index.bladeで送られた$matterのidを受け取った
+        //Mateterはモデルであり、モデル名の複数形のテーブルに問い合わせをする役割
         $filter = $request->query();
         //URLに？がついているものをクエリ文字と呼び、$request->query();はクエリ文字を取得するための定型文である
         //phpでは右辺から左辺に代入する
@@ -96,6 +107,7 @@ class MatterController extends Controller
         if (isset($filter['state'])) {
             if ($filter['state'] === "Webサイト") {    
                 $productName = Product::where('title','Webサイト')->where('matter_id',$matter->id)->first();
+                // Productsテーブルからtitleの列からWebサイトを検索し、さらにmatter_idの列から$matterのidと一致するものを検索し、1つ取ってくる。
             }elseif($filter['state'] === "LP") {
                 $productName = Product::where('title','LP')->where('matter_id',$matter->id)->first();
             }elseif($filter['state'] === "メディア") {
@@ -107,10 +119,46 @@ class MatterController extends Controller
             $productName = Product::where('matter_id',$matter->id)->first();
             // where('title','Webサイト')があると、Webサイトを制作しない案件の場合エラーが出てしまうため 
         }
-        // dd($product);
-        return view('matters.show',compact('matter','productName'));
+        
+        $stepNames = [
+            "お見積もり",
+            "ヒアリング",
+            "ワイヤーフレーム作成",
+            "ワイヤーフレーム修正",
+            "文言作成",
+            "文言修正",
+            "デザイン作成",
+            "デザイン修正",
+            "コーディング",
+            "動作チェック",
+            "公開",
+        ];
+        // ステップ名の配列を作成した
+
+        // 上記のif文ではstateを判別し、下記のif分ではstepを判別している
+        if (isset($filter['step'])) {
+            foreach ($stepNames as $name){
+                // 各ステップ名をforeachで回す
+            if ($filter['step'] === $name) {
+                    // ①$filter['step']の'step'はクエリ文字（URL）で$nameはステップ名・・・一致したら
+                    $step = Step::where('step_name',$name)->where('matter_id',$matter->id)->where('product_id',$productName->id)->first();
+                    // ②step_name、matter_id、product_id（カラム名）で探してきてヒットが重なったもの$stepに代入する（where≒検索的な）
+                }
+            }
+        }else{
+            $step = Step::where('step_name','ワイヤーフレーム作成')->where('matter_id',$matter->id)->where('product_id',$productName->id)->first();
+            $filter['step'] = 'ワイヤーフレーム作成';
+            // $filter['step']に初期値を入れないとbladeでエラーが出るため
+        }    
+        
+        
+        $todos = Todo::where('product_id',$productName->id)->where('step_id',$step->id)->get();
+        
+        // dd($countTodos);
+
+        return view('matters.show',compact('matter','productName','todos','filter'));
     }
-        //isset()は()内の文字がある場合trueなので、案件一覧ページから詳細に飛んだ際はクエリ文字が見つからずelseに飛ぶ 
+        
 
     /**
      * Show the form for editing the specified resource.

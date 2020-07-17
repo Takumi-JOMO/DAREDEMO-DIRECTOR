@@ -17,7 +17,9 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->text('title');
-            $table->text('url')->nullable();
+            $table->text('director_gantt_chart_url')->nullable();
+            $table->text('customer_gantt_chart_url')->nullable();
+            $table->text('designer_engineer_gantt_chart_url')->nullable();
             $table->unsignedBigInteger('matter_id');
             $table->foreign('matter_id')->references('id')->on('matters')->onDelete('cascade');
 

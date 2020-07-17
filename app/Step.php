@@ -14,4 +14,9 @@ class Step extends Model
     //    hasManyの後ろのTodoはモデル名
     }
 
+    public function product()
+    {
+       return $this->belongsTo('App\Product');
+    }
+
 }

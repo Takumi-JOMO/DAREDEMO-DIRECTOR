@@ -8,7 +8,8 @@
                 <div class="card-header">
                 案件一覧
                 </div>
-                @foreach ($matters as $matter)
+                @foreach (Auth::user()->matters as $matter)
+                {{-- 上記はリレーションを使う --}}
                 <div class="card-body">
                     <p class="card-name">会社名：{{ $matter->name }}</p>
                     <p class="card-outputs">制作物：
@@ -20,6 +21,7 @@
                     <a href="{{ route('matters.show', $matter->id) }}" class="btn btn-primary">案件詳細</a>
                 </div>
                 @endforeach
+                {{-- routeでコントローラーにルーティングして、matterのidをMatterContorollerに送る→MatterContorollerのshowメソッドで受け取る処理を行う --}}
             </div>
         </div>
         <div class="col-md-2">
@@ -28,5 +30,4 @@
     </div>
 </div>
 @endsection
-<!-- git add test -->
 {{--15行目 @foreach ($matter->products as $product)ではMatter.phpでつないだリレーションを呼び出した--}}
