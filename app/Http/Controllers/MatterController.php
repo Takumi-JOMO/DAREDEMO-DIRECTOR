@@ -97,6 +97,9 @@ class MatterController extends Controller
     {
         // dd($id);
         $matter = Matter::find($id);
+        if(Auth::user()->matters()->where('matter_id',$id)->doesntExist()){
+            abort('403','権限がありません。');
+        }
 
         //$idは案件詳細画面のURLのパラメーターであり、index.bladeで送られた$matterのidを受け取った
         //Mateterはモデルであり、モデル名の複数形のテーブルに問い合わせをする役割

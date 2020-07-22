@@ -24,5 +24,6 @@ Route::resource('todos','TodoController');
 Route::resource('steps','StepController');
 Route::resource('users','UserController');
 Route::resource('products','ProductController');
+Route::resource('comments','CommentController');
 // Routingをした
 

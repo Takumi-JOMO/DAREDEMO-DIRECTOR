@@ -65,14 +65,19 @@ class TodoController extends Controller
             // where('title','Webサイト')があると、Webサイトを制作しない案件の場合エラーが出てしまうため 
         }
         $steps = Step::where('matter_id',$request->matter_id)->where('product_id',$productName->id)->get();
-        // dd($step);
+        // dd($request);
         foreach ($steps as $step){
+            foreach ($request->todo_names as $todo_name){
+            if ($todo_name === null){
+                continue;
+            }
             $todo = new Todo;
-            $todo -> todo_name = $request -> todo_name;
+            $todo -> todo_name = $todo_name;
             $todo -> step_id = $step->id;
             $todo -> product_id = $productName->id;
             $todo -> status = "進行中";
             $todo -> save();
+            }
         }
 
         if (isset($filter['step'])) {
@@ -162,6 +167,14 @@ class TodoController extends Controller
 
 
 
+
+
+
+
+
+
+
+        
         return redirect('matters/' . $todo->product->matter->id . '?state=' . $request->state . '&step=' . $request->step);
         // phpの変数と文字列の結合を行い、matters詳細ページのURLに合わせてURLを作成した
 
