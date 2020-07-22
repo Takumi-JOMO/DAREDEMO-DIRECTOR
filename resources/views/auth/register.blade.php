@@ -42,13 +42,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="CompanyNameFormControlSelect1">権限</label>
-                            <select class="form-control row" name="authority_id">
+                            <label class="col-md-4 col-form-label text-md-right" for="CompanyNameFormControlSelect1">権限</label>
+                            <div class="col-md-6">
+                            <select class="form-control row m-0" name="authority_id">
                                 <option value="1">ディレクター</option>
                                 <option value="2">プログラマー／デザイナー</option>
                                 <option value="3">お客様</option>
                                 <option value="4">Admin</option>
                             </select>
+                            </div>
                         </div>
 
 

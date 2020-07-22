@@ -86,12 +86,18 @@
                             {{csrf_field()}}
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" name="email">
-                                <input type="hidden" class="form-control" id="inputText" name="matter_id"
-                                    value="{{ $matter->id }}">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" name="email">
+                                        <input type="hidden" class="form-control" id="inputText" name="matter_id"
+                                            value="{{ $matter->id }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                         @endif
                     </div>
