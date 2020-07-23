@@ -46,9 +46,9 @@
                             <div class="col-md-6">
                             <select class="form-control row m-0" name="authority_id">
                                 <option value="1">ディレクター</option>
-                                <option value="2">プログラマー／デザイナー</option>
-                                <option value="3">お客様</option>
-                                <option value="4">Admin</option>
+                                <option value="11">プログラマー／デザイナー</option>
+                                <option value="21">お客様</option>
+                                <option value="31">Admin</option>
                             </select>
                             </div>
                         </div>

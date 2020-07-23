@@ -85,7 +85,7 @@
                         <form action="{{ route('users.store') }}" method="POST">
                             {{csrf_field()}}
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
+                                <label for="exampleInputEmail1">お客様／デザイナー／プログラマーのEmail</label>
                                 <div class="row">
                                     <div class="col-md-8">
                                         <input type="email" class="form-control" id="exampleInputEmail1"
@@ -100,6 +100,52 @@
                             </div>
                         </form>
                         @endif
+                        <div class="row mt-4">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModal">
+                                Launch demo modal
+                            </button>
+                            <a href="{{ $productName->image_url }}" target="_blank">
+                                画像を確認
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <form action="{{ route('products.updateUrl',$productName->id) }}" method="POST">
+                                {{csrf_field()}}
+                                {{method_field('PATCH')}}
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">制作物を提出</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group row">
+                                            <label for="inputText" class="col-sm-2 col-form-label">Image URL</label>
+                                            <div class="col-sm-10">
+                                                <input type="url" class="form-control" id="inputText" name="image_url">
+                                                @isset($filter['state'])
+                                                <input type="hidden" class="form-control" id="inputText" name="state"
+                                                    value="{{ $filter['state'] }}">
+                                                @endisset
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">保存</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -155,7 +201,7 @@
             <!-- $filter[ 'step' ]はURL（クエリ文字）と一致するのはDBのstep_nameカラムだから -->
             <!-- if ($filter['step'] === $step->step_name)に初期値がないとエラーが出るため、MatterControllerのshowメソッドに初期値を記載する -->
             <div class="position-relative my-2">
-                @if(Auth::user()->authority->name === 'ディレクター')
+                @if(Auth::user()->authority->name === 'ディレクター'||Auth::user()->authority->name === 'プログラマー／デザイナー')
                 <button type="button" class="btn btn-primary" data-toggle="modal"
                     data-target="#documentModal{{ $step->id }}">
                     制作物を提出

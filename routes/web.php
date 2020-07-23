@@ -24,6 +24,7 @@ Route::resource('todos','TodoController');
 Route::resource('steps','StepController');
 Route::resource('users','UserController');
 Route::resource('products','ProductController');
+Route::patch('products/urlupdate/{id}','ProductController@updateUrl')->name('products.updateUrl');
 Route::resource('comments','CommentController');
 // Routingをした
 

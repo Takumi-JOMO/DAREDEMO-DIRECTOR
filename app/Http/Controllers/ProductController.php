@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Matter;
+use App\Product;
 
 class ProductController extends Controller
 {
@@ -84,6 +85,17 @@ class ProductController extends Controller
         }
 
         return redirect()->route('matters.show', $matter->id);
+
+    }
+    
+    public function updateUrl(Request $request, $id)
+    {
+        // dd($request);
+        $product = Product::find($id);
+        $product -> image_url = $request -> image_url;
+        $product -> save();
+
+        return redirect()->route('matters.show', $product->matter->id);
 
     }
 
