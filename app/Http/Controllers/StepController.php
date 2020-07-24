@@ -73,7 +73,7 @@ class StepController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request);
+        // dd($request);
         $step = Step::find($id);
 
         $step -> google_drive_url = $request -> google_drive_url;

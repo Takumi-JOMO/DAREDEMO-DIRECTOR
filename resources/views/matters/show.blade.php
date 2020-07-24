@@ -103,13 +103,13 @@
                         <div class="row mt-4">
                             <!-- Button trigger modal -->
                             <div class="col-md-12">
-                            <button type="button" class="btn btn-primary mr-4" data-toggle="modal"
-                                data-target="#imageModal">
-                                画像格納フォルダのURLを追加
-                            </button>
-                            <a href="{{ $productName->image_url }}" target="_blank">
-                                画像を確認
-                            </a>
+                                <button type="button" class="btn btn-primary mr-4" data-toggle="modal"
+                                    data-target="#imageModal">
+                                    画像格納フォルダのURLを追加
+                                </button>
+                                <a href="{{ $productName->image_url }}" target="_blank">
+                                    画像を確認
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -176,8 +176,6 @@
         @endif
     </div>
 
-
-
     <!-- TODO -->
     <div class="row">
         <div class="col-md-10">
@@ -185,41 +183,21 @@
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 @foreach($productName->steps as $step)
                 <li class="nav-item" role="presentation">
-                    <u>
-                        <a class="nav-link small col-md-12 pr-2 pl-0 mx-0 {{(isset($filter['step']) && $filter['step'] === $step->step_name) ? 'active' : ''}}"
-                            id="{{$step->id}}" href="?state={{$productName->title}}&step={{$step->step_name}}"
-                            role="tab" aria-controls="{{$step->id}}" aria-selected="true">{{ $step->step_name }}</a>
-                        <!-- hrefで$productNameとしているのは、$productには「その他」が入ってしまっているため -->
-                    </u>
+                    <a class="nav-link small col-md-12 pr-2 pl-0 mx-0 {{(isset($filter['step']) && $filter['step'] === $step->step_name) ? 'active' : ''}}"
+                        id="{{$step->id}}" href="?state={{$productName->title}}&step={{$step->step_name}}" role="tab"
+                        aria-controls="{{$step->id}}" aria-selected="true">{{ $step->step_name }}</a>
+                    <!-- hrefで$productNameとしているのは、$productには「その他」が入ってしまっているため -->
                 </li>
                 @endforeach
             </ul>
-            <!-- drive url 確認用ボタン元の場所 -->
-            <!-- Button trigger modal -->
-            @foreach ($productName->steps as $step)
-            @if ($filter['step'] === $step->step_name)
-            <!-- ifの役割はURL（クエリ文字）と一致するstepのボタンを出す -->
-            <!-- $filter[ 'step' ]はURL（クエリ文字）と一致するのはDBのstep_nameカラムだから -->
-            <!-- if ($filter['step'] === $step->step_name)に初期値がないとエラーが出るため、MatterControllerのshowメソッドに初期値を記載する -->
-            <div class="position-relative my-2">
-                @if(Auth::user()->authority->name === 'ディレクター'||Auth::user()->authority->name === 'プログラマー／デザイナー')
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#documentModal{{ $step->id }}">
-                    制作物を提出
-                </button>
-                @endif
-                <!-- <button type="button" class="btn btn-primary"> -->
-                <a href="{{ $step->google_drive_url }}" target="_blank">
-                    制作物を確認
-                </a>
-                </button>
-            </div>
-            @endif
-            @endforeach
         </div>
     </div>
+
+    <!-- 制作ステップ -->
     <div class="row">
         <div class="col-md-10">
+            <!-- drive url 確認用ボタン元の場所 -->
+
             <table class="table table-bordered table-striped mb-0">
                 <!-- <table class="table table-bordered py-2"> -->
                 <tr class="bg-primary text-white">
@@ -231,7 +209,6 @@
                     <th class="t-w-80" scope="col">削除</th>
                 </tr>
             </table>
-
             <div class="table-wrapper-scroll-y my-custom-scrollbar">
 
                 <table class="table table-bordered table-striped mb-0">
@@ -307,7 +284,7 @@
                                 @endif -->
                                 </form>
                             </td>
-                            <td  class="t-w-153">
+                            <td class="t-w-153">
                                 <!-- @if($todo->status)
                             <p>{{ $todo->status }}</p>
                             @else
@@ -344,10 +321,26 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Button trigger modal -->
+            @foreach ($productName->steps as $step)
+            @if ($filter['step'] === $step->step_name)
+            <!-- ifの役割はURL（クエリ文字）と一致するstepのボタンを出す -->
+            <!-- $filter[ 'step' ]はURL（クエリ文字）と一致するのはDBのstep_nameカラムだから -->
+            <!-- if ($filter['step'] === $step->step_name)に初期値がないとエラーが出るため、MatterControllerのshowメソッドに初期値を記載する -->
+            @if(Auth::user()->authority->name === 'ディレクター')
+            <button type="button" class="btn btn-primary" data-toggle="modal"
+                data-target="#documentModal{{ $step->id }}">
+                提出
+            </button>
+            @endif
+
+            <a href="{{ $step->google_drive_url }}">確認用URL</a>
+            @endif
+            @endforeach
             <!-- Button trigger modal -->
             @if(Auth::user()->authority->name === 'ディレクター')
-            <button type="button" class="btn btn-primary position-relative" data-toggle="modal"
-                data-target="#exampleModal">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                 ページ／セクションを追加
             </button>
             @endif
@@ -371,7 +364,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control mb-2" id="inputText" name="todo_names[]">
+                                        <input type="text" class="form-control" id="inputText" name="todo_names[]">
                                         <input type="text" class="form-control my-2" id="inputText" name="todo_names[]">
                                         <input type="text" class="form-control my-2" id="inputText" name="todo_names[]">
                                         <input type="text" class="form-control my-2" id="inputText" name="todo_names[]">
@@ -393,9 +386,7 @@
         </div>
         <!-- 制作ステップ（右側） -->
         <div class="col-md-2 pl-0">
-            <table class="table table-bordered position-relative py-2">
-                <!-- テーブルテスト -->
-                <!-- <div class="card position-relative"> -->
+            <table class="table table-bordered py-2">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item bg-primary">
                         <p class="mb-0 text-white font-weight-bold">制作ステップ</p>
@@ -409,47 +400,48 @@
                         <p class="mb-0">{{ $step->status }}</p>
                         @endif
                     </li>
-                    <!-- Modal -->
-                    <div class="modal fade" id="documentModal{{ $step->id }}" tabindex="-1" role="dialog"
-                        aria-labelledby="documentModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <form action="{{ route('steps.update',$step->id) }}" method="POST">
-                                {{csrf_field()}}
-                                {{method_field('PATCH')}}
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="ducumentModalLabel">制作物を提出</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="form-group row">
-                                            <label for="inputText" class="col-sm-2 col-form-label">Google Drive
-                                                URL</label>
-                                            <div class="col-sm-10">
-                                                <input type="url" class="form-control" id="inputText"
-                                                    name="google_drive_url">
-                                                @isset($filter['state'])
-                                                <input type="hidden" class="form-control" id="inputText" name="state"
-                                                    value="{{ $filter['state'] }}">
-                                                @endisset
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">保存</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                     @endforeach
                 </ul>
+            </table>
         </div>
     </div>
 </div>
 </div>
+<!-- Modal -->
+@foreach ($productName->steps as $step)
+<div class="modal fade" id="documentModal{{ $step->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{{ route('steps.update',$step->id) }}" method="POST">
+            {{csrf_field()}}
+            {{method_field('PATCH')}}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="inputText" class="col-sm-2 col-form-label">Google Drive
+                            URL</label>
+                        <div class="col-sm-10">
+                            <input type="url" class="form-control" id="inputText" name="google_drive_url">
+                            @isset($filter['state'])
+                            <input type="hidden" class="form-control" id="inputText" name="state"
+                                value="{{ $filter['state'] }}">
+                            @endisset
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@endforeach
 @endsection
