@@ -14,21 +14,42 @@
     height: 600px;
   }
 
-  .t-w-40{
-    width:40px;
+  .t-w-10{
+    width:10px;
+  } 
+  .t-w-39{
+    width:39px;
+  } 
+  .t-w-250{
+    width:250px;
+  } 
+  .t-w-293{
+    width:293px;
+  } 
+  .t-w-234{
+    width:234px;
+  } 
+  .t-w-240{
+    width:240px;
   } 
   .t-w-200{
     width:200px;
   } 
-  .t-w-45{
-    width:45px;
+  .t-w-153{
+    width:153px;
   } 
-  .t-w-45{
-    width:45px;
+  .t-w-150{
+    width:150px;
   } 
-  .t-w-45{
-    width:45px;
+  .t-w-130{
+    width:130px;
   } 
-  .t-w-45{
-    width:45px;
+  .t-w-105{
+    width:105px;
+  } 
+  .t-w-90{
+    width:90px;
+  }
+  .t-w-80{
+    width:80px;
   }

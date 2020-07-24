@@ -102,34 +102,36 @@
                         @endif
                         <div class="row mt-4">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#exampleModal">
-                                Launch demo modal
+                            <div class="col-md-12">
+                            <button type="button" class="btn btn-primary mr-4" data-toggle="modal"
+                                data-target="#imageModal">
+                                画像格納フォルダのURLを追加
                             </button>
                             <a href="{{ $productName->image_url }}" target="_blank">
                                 画像を確認
                             </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog"
+                        aria-labelledby="imageModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <form action="{{ route('products.updateUrl',$productName->id) }}" method="POST">
                                 {{csrf_field()}}
                                 {{method_field('PATCH')}}
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">制作物を提出</h5>
+                                        <h5 class="modal-title" id="imageModalLabel">画像格納フォルダのURLを提出</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group row">
-                                            <label for="inputText" class="col-sm-2 col-form-label">Image URL</label>
-                                            <div class="col-sm-10">
+                                            <label for="inputText" class="col-md-4 col-form-label">URL</label>
+                                            <div class="col-md-10">
                                                 <input type="url" class="form-control" id="inputText" name="image_url">
                                                 @isset($filter['state'])
                                                 <input type="hidden" class="form-control" id="inputText" name="state"
@@ -140,8 +142,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">保存</button>
+                                            data-dismiss="modal">close</button>
+                                        <button type="submit" class="btn btn-primary">save</button>
                                     </div>
                                 </div>
                             </form>
@@ -179,7 +181,6 @@
     <!-- TODO -->
     <div class="row">
         <div class="col-md-10">
-            <p>ＴＯＤＯ</p>
             <!-- ガントチャート下のステップ -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 @foreach($productName->steps as $step)
@@ -222,12 +223,12 @@
             <table class="table table-bordered table-striped mb-0">
                 <!-- <table class="table table-bordered py-2"> -->
                 <tr class="bg-primary text-white">
-                    <th class="t-w-40" scope="col">#</th>
+                    <th class="t-w-10" scope="col">#</th>
                     <th class="t-w-200" scope="col">ページ／セクション</th>
-                    <th class="t-w-150" scope="col">コメント</th>
-                    <th class="t-w-150" scope="col">ステータス</th>
-                    <th class="t-w-150" scope="col">ステータス変更</th>
-                    <th class="t-w-150" scope="col">削除</th>
+                    <th class="t-w-250" scope="col">コメント</th>
+                    <th class="t-w-90" scope="col">ステータス</th>
+                    <th class="t-w-130" scope="col">ステータス変更</th>
+                    <th class="t-w-80" scope="col">削除</th>
                 </tr>
             </table>
 
@@ -238,9 +239,9 @@
                         <?php $num=1 ?>
                         @foreach($todos as $todo)
                         <tr>
-                            <th class="t-w-40" scope="row">{{ $num }}</th>
-                            <td>{{ $todo->todo_name }}</td>
-                            <td>
+                            <th class="t-w-39" scope="row">{{ $num }}</th>
+                            <td class="t-w-234">{{ $todo->todo_name }}</td>
+                            <td class="t-w-293">
                                 コメントがあります。
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
                                     data-target="#commentModal">
@@ -283,7 +284,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>
+                            <td class="t-w-105">
                                 @if($todo->status)
                                 <p>{{ $todo->status }}</p>
                                 @else
@@ -306,7 +307,7 @@
                                 @endif -->
                                 </form>
                             </td>
-                            <td>
+                            <td  class="t-w-153">
                                 <!-- @if($todo->status)
                             <p>{{ $todo->status }}</p>
                             @else
@@ -347,7 +348,7 @@
             @if(Auth::user()->authority->name === 'ディレクター')
             <button type="button" class="btn btn-primary position-relative" data-toggle="modal"
                 data-target="#exampleModal">
-                ワイヤーフレームを追加
+                ページ／セクションを追加
             </button>
             @endif
 
@@ -359,22 +360,22 @@
                         {{csrf_field()}}
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">ワイヤーフレームを追加</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">ページ／セクションを追加</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <div class="form-group row">
-                                    <h5 class="col-sm-12">ワイヤーフレームを追加してください</h5>
+                                    <h5 class="col-sm-12 my-0">ページ／セクションを追加を追加してください</h5>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputText" name="todo_names[]">
-                                        <input type="text" class="form-control" id="inputText" name="todo_names[]">
-                                        <input type="text" class="form-control" id="inputText" name="todo_names[]">
-                                        <input type="text" class="form-control" id="inputText" name="todo_names[]">
-                                        <input type="text" class="form-control" id="inputText" name="todo_names[]">
+                                        <input type="text" class="form-control mb-2" id="inputText" name="todo_names[]">
+                                        <input type="text" class="form-control my-2" id="inputText" name="todo_names[]">
+                                        <input type="text" class="form-control my-2" id="inputText" name="todo_names[]">
+                                        <input type="text" class="form-control my-2" id="inputText" name="todo_names[]">
+                                        <input type="text" class="form-control my-2" id="inputText" name="todo_names[]">
                                         <input type="hidden" class="form-control" id="inputText" name="matter_id"
                                             value="{{ $matter->id }}">
                                         <!-- input 1つに対して送れるデータは１つ -->
@@ -410,14 +411,14 @@
                     </li>
                     <!-- Modal -->
                     <div class="modal fade" id="documentModal{{ $step->id }}" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        aria-labelledby="documentModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <form action="{{ route('steps.update',$step->id) }}" method="POST">
                                 {{csrf_field()}}
                                 {{method_field('PATCH')}}
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">制作物を提出</h5>
+                                        <h5 class="modal-title" id="ducumentModalLabel">制作物を提出</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
