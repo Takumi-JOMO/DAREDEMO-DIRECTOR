@@ -336,7 +336,7 @@
             </button>
             @endif
 
-            <a href="{{ $step->google_drive_url }}" terget="_blank">制作物を確認</a>
+            <a href="{{ $step->google_drive_url }}" target="_blank">制作物を確認</a>
             @endif
             @endforeach
             <!-- Button trigger modal -->
