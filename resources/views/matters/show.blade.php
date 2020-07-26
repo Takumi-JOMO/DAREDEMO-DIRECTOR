@@ -236,16 +236,14 @@
                                                 {{ csrf_field() }}
                                                 <div class="modal-body">
                                                     <div class="form-group">
-                                                    @if($todo->comments)
-                                                    @foreach( $todo -> comments as $comment)
+                                                    @foreach( $todo->comments()->get() as $comment)
                                                         <div class="exampleFormControlTextarea1">
                                                             <p class="my-0">投稿者　：{{ $comment->user->name }}</p>
                                                             <p class="my-0">投稿日時：{{ $comment->created_at }}</p>
-                                                            <p class="card-text">コメント：{{ $comment->body }}</p>
-                                                            <p class="mt-3 mb-0">コメントを残す</p>
+                                                            <p class="card-text mb-5">コメント：{{ $comment->body }}</p>
                                                         </div>
                                                     @endforeach
-                                                    @endif
+                                                            <p class="mt-3 mb-0">コメントを残す</p>
                                                         <input type="text" class="form-control" id="inputText"
                                                             name="body">
                                                         <input type="hidden" class="form-control" id="inputText"
