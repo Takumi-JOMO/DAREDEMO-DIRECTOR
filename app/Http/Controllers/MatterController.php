@@ -156,8 +156,14 @@ class MatterController extends Controller
         
         
         $todos = Todo::where('product_id',$productName->id)->where('step_id',$step->id)->get();
-        
-        // dd($countTodos);
+        $todos -> load('comments');
+        // dd($todos);
+
+        // foreach($todos as $todo){
+        //     foreach($todo->comments() as $comment){
+           // dd($comment);
+        //     }
+        // }
 
         return view('matters.show',compact('matter','productName','todos','filter'));
     }

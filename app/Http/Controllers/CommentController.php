@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Todo;
+use App\Comment;
+use Auth;
 
 class CommentController extends Controller
 {
@@ -34,8 +37,14 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
-        // $todo =Todo::find($request->)
+        // dd($request);
+        $comment = new Comment;
+        $comment->body = $request->body;
+        $comment->todo_id = $request->todo_id;
+        $comment->user_id = Auth::id();
+        $comment->save();
+
+        return redirect() ->route('matters.show', $comment->todo->product->matter->id);
     }
 
     /**

@@ -40,7 +40,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                        
                             <label for="CommentsFormControlTextarea">備考</label>
                             <textarea class="form-control" name="comments" placeholder="備考を入力してください"
                                 rows="3"></textarea>

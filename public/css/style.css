@@ -14,42 +14,27 @@
     height: 600px;
   }
 
-  .t-w-10{
-    width:10px;
+  .h-n{
+    width:45px;
   } 
-  .t-w-39{
-    width:39px;
+  .h-p{
+    width:300px;
   } 
-  .t-w-250{
-    width:250px;
-  } 
-  .t-w-293{
-    width:293px;
-  } 
-  .t-w-234{
-    width:234px;
-  } 
-  .t-w-240{
-    width:240px;
-  } 
-  .t-w-200{
-    width:200px;
-  } 
-  .t-w-153{
-    width:153px;
-  } 
-  .t-w-150{
-    width:150px;
-  } 
-  .t-w-130{
-    width:130px;
-  } 
-  .t-w-105{
-    width:105px;
-  } 
-  .t-w-90{
-    width:90px;
-  }
-  .t-w-80{
+  .h-c{
     width:80px;
+  } 
+  .h-s{
+    width:100px;
+  } 
+  .h-sc{
+    width:100px;
+  } 
+  .h-d{
+    width:100px;
+  } 
+  .t-h{
+    height:617px;
+  }
+  .s-h{
+    height:56px;
   }

@@ -17,68 +17,14 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <p class="card-text">制作物：
+                        <p class="card-text">制作物　　　：
                             @foreach ($matter->products as $product)
-                            {{ $product->title }}
+                            {{ $product->title }}　
                             @endforeach
                         </p>
                         <p>案件作成日時：{{ $matter->created_at }}</p>
-                        @if(Auth::user()->authority->name === 'ディレクター')
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                            data-target="#ganttChartModal">
-                            <!-- # === id なので "#ganttChart" === id="ganttChartModal"-->
-                            ガントチャートを提出
-                        </button>
-                        @endif
-                        <!-- Modal -->
-                        <div class="modal fade" id="ganttChartModal" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <form action="{{ route('products.update',$matter->id) }}" method="POST">
-                                    {{csrf_field()}}
-                                    {{method_field('PATCH')}}
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        @foreach ($matter->products as $product)
-                                        <div class="modal-body">
-                                            <div class="form-group row">
-                                                <label for="inputText" class="col-md-3 col-form-label">
-                                                    {{ $product->title }}
-                                                </label>
-                                                <div class="col-md-10 mt-2">
-                                                    <input type="text" class="form-control"
-                                                        value="{{$product->director_gantt_chart_url}}" id="inputText"
-                                                        name="director_gantt_chart_url[]" placeholder="ディレクター用ガントチャート">
-                                                    <!-- []（配列）は[]に変数をいくつも入れられる -->
-                                                </div>
-                                                <div class="col-sm-10  mt-2">
-                                                    <input type="text" class="form-control"
-                                                        value="{{$product->customer_gantt_chart_url}}" id="inputText"
-                                                        name="customer_gantt_chart_url[]" placeholder="お客様用ガントチャート">
-                                                </div>
-                                                <div class="col-sm-10  mt-2">
-                                                    <input type="text" class="form-control"
-                                                        value="{{$product->designer_engineer_gantt_chart_url}}"
-                                                        id="inputText" name="designer_engineer_gantt_chart_url[]"
-                                                        placeholder="デザイナー／エンジニア用ガントチャート">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">保存</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <p>備考　　　　：{{ $matter->comments }}</p>
+
                     </div>
                     <div class="col-md-6">
                         @if(Auth::user()->authority->name === 'ディレクター')
@@ -175,9 +121,60 @@
         </iframe>
         @endif
     </div>
+    @if(Auth::user()->authority->name === 'ディレクター')
+    <button type="button" class="btn btn-primary mt-1 float-right" data-toggle="modal" data-target="#ganttChartModal">
+        <!-- # === id なので "#ganttChart" === id="ganttChartModal"-->
+        ガントチャートを提出
+    </button>
+    @endif
+    <!-- Modal -->
+    <div class="modal fade" id="ganttChartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="{{ route('products.update',$matter->id) }}" method="POST">
+                {{csrf_field()}}
+                {{method_field('PATCH')}}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @foreach ($matter->products as $product)
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label for="inputText" class="col-md-3 col-form-label">
+                                {{ $product->title }}
+                            </label>
+                            <div class="col-md-10 mt-2">
+                                <input type="text" class="form-control" value="{{$product->director_gantt_chart_url}}"
+                                    id="inputText" name="director_gantt_chart_url[]" placeholder="ディレクター用ガントチャート">
+                                <!-- []（配列）は[]に変数をいくつも入れられる -->
+                            </div>
+                            <div class="col-sm-10  mt-2">
+                                <input type="text" class="form-control" value="{{$product->customer_gantt_chart_url}}"
+                                    id="inputText" name="customer_gantt_chart_url[]" placeholder="お客様用ガントチャート">
+                            </div>
+                            <div class="col-sm-10  mt-2">
+                                <input type="text" class="form-control"
+                                    value="{{$product->designer_engineer_gantt_chart_url}}" id="inputText"
+                                    name="designer_engineer_gantt_chart_url[]" placeholder="デザイナー／エンジニア用ガントチャート">
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- TODO -->
-    <div class="row">
+    <div class="row mt-5">
         <div class="col-md-10">
             <!-- ガントチャート下のステップ -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -201,31 +198,30 @@
             <table class="table table-bordered table-striped mb-0">
                 <!-- <table class="table table-bordered py-2"> -->
                 <tr class="bg-primary text-white">
-                    <th class="t-w-10" scope="col">#</th>
-                    <th class="t-w-200" scope="col">ページ／セクション</th>
-                    <th class="t-w-250" scope="col">コメント</th>
-                    <th class="t-w-90" scope="col">ステータス</th>
-                    <th class="t-w-130" scope="col">ステータス変更</th>
-                    <th class="t-w-80" scope="col">削除</th>
+                    <th class="h-n" scope="col">#</th>
+                    <th class="h-p" scope="col">ページ／セクション</th>
+                    <th class="h-c" scope="col">コメント</th>
+                    <th class="h-s" scope="col">ステータス</th>
+                    <th class="h-sc" scope="col">ステータス変更</th>
+                    <th class="h-d" scope="col">削除</th>
                 </tr>
             </table>
-            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar t-h">
 
                 <table class="table table-bordered table-striped mb-0">
                     <tbody>
                         <?php $num=1 ?>
                         @foreach($todos as $todo)
                         <tr>
-                            <th class="t-w-39" scope="row">{{ $num }}</th>
-                            <td class="t-w-234">{{ $todo->todo_name }}</td>
-                            <td class="t-w-293">
-                                コメントがあります。
+                            <th class="h-n pt-3" scope="row">{{ $num }}</th>
+                            <td class="h-p pt-3">{{ $todo->todo_name }}</td>
+                            <td class="h-c py-2">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#commentModal">
+                                    data-target="#commentModal{{ $todo->id }}">
                                     確認
                                 </button>
                                 <!-- Comment Modal -->
-                                <div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
+                                <div class="modal fade" id="commentModal{{ $todo->id }}" tabindex="-1" role="dialog"
                                     aria-labelledby="commentModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-xl">
                                         <div class="modal-content">
@@ -240,15 +236,20 @@
                                                 {{ csrf_field() }}
                                                 <div class="modal-body">
                                                     <div class="form-group">
+                                                    @if($todo->comments)
+                                                    @foreach( $todo -> comments as $comment)
                                                         <div class="exampleFormControlTextarea1">
-                                                            <p>投稿者：</p>
-                                                            <p class="card-text">内容：</p>
-                                                            <p>投稿日時：</p>
-                                                            <button type="button"
-                                                                class="btn btn-primary">確認しました</button>
+                                                            <p class="my-0">投稿者　：{{ $comment->user->name }}</p>
+                                                            <p class="my-0">投稿日時：{{ $comment->created_at }}</p>
+                                                            <p class="card-text">コメント：{{ $comment->body }}</p>
+                                                            <p class="mt-3 mb-0">コメントを残す</p>
                                                         </div>
-                                                        <textarea class="form-control" name="comment"
-                                                            id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                    @endforeach
+                                                    @endif
+                                                        <input type="text" class="form-control" id="inputText"
+                                                            name="body">
+                                                        <input type="hidden" class="form-control" id="inputText"
+                                                            name="todo_id" value="{{ $todo->id }}">
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -261,7 +262,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="t-w-105">
+                            <td class="h-s pt-3 pb-0">
                                 @if($todo->status)
                                 <p>{{ $todo->status }}</p>
                                 @else
@@ -284,7 +285,7 @@
                                 @endif -->
                                 </form>
                             </td>
-                            <td class="t-w-153">
+                            <td class="h-sc py-2">
                                 <!-- @if($todo->status)
                             <p>{{ $todo->status }}</p>
                             @else
@@ -307,7 +308,7 @@
                                     @endif
                                 </form>
                             </td>
-                            <td>
+                            <td class="h-d py-2">
                                 <form action="{{ route('todos.destroy', $todo->id) }}" method='post'>
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
@@ -329,18 +330,19 @@
             <!-- $filter[ 'step' ]はURL（クエリ文字）と一致するのはDBのstep_nameカラムだから -->
             <!-- if ($filter['step'] === $step->step_name)に初期値がないとエラーが出るため、MatterControllerのshowメソッドに初期値を記載する -->
             @if(Auth::user()->authority->name === 'ディレクター')
-            <button type="button" class="btn btn-primary" data-toggle="modal"
+            <button type="button" class="btn btn-primary my-3 mr-2" data-toggle="modal"
                 data-target="#documentModal{{ $step->id }}">
-                提出
+                制作物を提出
             </button>
             @endif
 
-            <a href="{{ $step->google_drive_url }}">確認用URL</a>
+            <a href="{{ $step->google_drive_url }}">制作物を確認</a>
             @endif
             @endforeach
             <!-- Button trigger modal -->
             @if(Auth::user()->authority->name === 'ディレクター')
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            <button type="button" class="btn btn-primary float-md-right my-3" data-toggle="modal"
+                data-target="#exampleModal">
                 ページ／セクションを追加
             </button>
             @endif
@@ -360,7 +362,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="form-group row">
-                                    <h5 class="col-sm-12 my-0">ページ／セクションを追加を追加してください</h5>
+                                    <h5 class="col-sm-12 my-0">ページ／セクションを追加してください</h5>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-10">
@@ -386,13 +388,15 @@
         </div>
         <!-- 制作ステップ（右側） -->
         <div class="col-md-2 pl-0">
-            <table class="table table-bordered py-2">
-                <ul class="list-group list-group-flush">
+            <table class="table table-bordered">
+                <tr class="list-group list-group-flush">
                     <li class="list-group-item bg-primary">
-                        <p class="mb-0 text-white font-weight-bold">制作ステップ</p>
+                        <p class="mb-0 text-white font-weight-bold">
+                            制作ステップ
+                        </p>
                     </li>
                     @foreach ($productName->steps as $step)
-                    <li class="list-group-item  px-2 py-1">
+                    <li class="list-group-item  px-2 py-1 s-h">
                         <p class="mb-0">{{ $step->step_name }}</p>
                         @if($step->status === "未完了")
                         <p class="mb-0 text-danger">{{ $step->status }}</p>
@@ -401,7 +405,7 @@
                         @endif
                     </li>
                     @endforeach
-                </ul>
+                </tr>
             </table>
         </div>
     </div>

@@ -19,4 +19,9 @@ class Todo extends Model
        return $this->belongsTo('App\Product');
     }
 
+    public function comments()
+    {
+       return $this->hasMany('App\Comment');
+    }
+
 }

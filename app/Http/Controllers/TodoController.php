@@ -143,6 +143,7 @@ class TodoController extends Controller
     {
         // dd($request);
         $todo = Todo::find($id);
+        // dd($todo);
         // dd($todo->product->matter);
         $todo -> status    = $request -> status;
         
